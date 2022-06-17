@@ -9,7 +9,7 @@ GO
 -- Create the table in the specified schema
 CREATE TABLE [dbo].[BasketItems]
 (
-    [id] INT NOT NULL PRIMARY KEY,
+    [id] INT NOT NULL PRIMARY KEY IDENTITY,
     [quantity] INT NOT NULL,
     [productId] INT NOT NULL,
     [basketId] INT NOT NULL,
