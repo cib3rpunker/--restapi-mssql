@@ -1,4 +1,4 @@
-USE store
+USE [dev-store]
 GO
 
 -- Create a new table called '[BasketItems]' in schema '[dbo]'
@@ -9,11 +9,11 @@ GO
 -- Create the table in the specified schema
 CREATE TABLE [dbo].[BasketItems]
 (
-    [id] INT NOT NULL PRIMARY KEY IDENTITY,
+    [basketItemsId] INT NOT NULL PRIMARY KEY IDENTITY,
     [quantity] INT NOT NULL,
     [productId] INT NOT NULL,
     [basketId] INT NOT NULL,
-    FOREIGN KEY (ProductID) REFERENCES Products(id),
-    FOREIGN KEY (BasketID) REFERENCES Baskets(id)
+    FOREIGN KEY (ProductID) REFERENCES Products(productId),
+    FOREIGN KEY (BasketID) REFERENCES Baskets(basketId)
 );
 GO

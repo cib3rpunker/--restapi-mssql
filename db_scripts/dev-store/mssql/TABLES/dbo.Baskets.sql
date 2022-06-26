@@ -1,4 +1,4 @@
-USE store
+USE [dev-store]
 GO
 
 -- Create a new table called '[Baskets]' in schema '[dbo]'
@@ -9,7 +9,7 @@ GO
 -- Create the table in the specified schema
 CREATE TABLE [dbo].[Baskets]
 (
-    [id] INT NOT NULL PRIMARY KEY,
-    [buyerId] NVARCHAR(50) NOT NULL,
+    [basketId] INT NOT NULL PRIMARY KEY,
+    [buyerId] NVARCHAR(36) NOT NULL,
 );
 GO

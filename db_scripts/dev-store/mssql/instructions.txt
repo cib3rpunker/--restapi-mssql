@@ -1,0 +1,10 @@
+Instructions
+
+1. CREATE DATABASE [dev-store]
+2. CREATE TABLE [dbo].Products
+3. CREATE TABLE [dbo].Baskets
+4. CREATE TABLE [dbo].BasketItems
+5. INSERT INTO [dbo].Products
+6. CREATE PROCEDURE [dbo].spRethrowError
+7. CREATE PROCEDURE [dbo].spGetBasketById
+8. CREATE PROCEDURE [dbo].spAddItemToBasket

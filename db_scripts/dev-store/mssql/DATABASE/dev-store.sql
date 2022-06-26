@@ -1,4 +1,4 @@
--- Create a new database called 'store'
+-- Create a new database called 'dev-store'
 -- Connect to the 'master' database to run this snippet
 USE master
 GO
@@ -6,7 +6,7 @@ GO
 IF NOT EXISTS (
     SELECT [name]
         FROM sys.databases
-        WHERE [name] = N'store'
+        WHERE [name] = N'dev-store'
 )
-CREATE DATABASE store
+CREATE DATABASE [dev-store]
 GO

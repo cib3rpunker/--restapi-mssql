@@ -1,4 +1,7 @@
-INSERT INTO store.dbo.Products
+USE [dev-store]
+GO
+
+INSERT INTO dbo.Products
   (name, description, price, pictureUrl,brand, type, quantityInStock)
 VALUES
   (

@@ -1,4 +1,4 @@
-USE store
+USE [dev-store]
 GO
 
 -- Create a new table called '[Products]' in schema '[dbo]'
@@ -9,7 +9,7 @@ GO
 -- Create the table in the specified schema
 CREATE TABLE [dbo].[Products]
 (
-    id int IDENTITY(1,1) PRIMARY KEY CLUSTERED NOT NULL,
+    [productId] int IDENTITY(1,1) PRIMARY KEY CLUSTERED NOT NULL,
     [name] NVARCHAR(100) NOT NULL,
     [description] NVARCHAR(500) NOT NULL,
     [price] NUMERIC(18, 2) NOT NULL,
