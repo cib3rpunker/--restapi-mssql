@@ -7,13 +7,11 @@
     {
       "type": "pwa-node",
       "request": "launch",
-      "name": "Debug Typescript",
+      "name": "Launch Program",
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}/src/index.ts",
-      "runtimeArgs": ["-r", "ts-node/register", "-r", "tsconfig-paths/register"],
-      "console": "integratedTerminal",
+      "program": "${file}",
       "outFiles": [
         "${workspaceFolder}/**/*.js"
       ]
