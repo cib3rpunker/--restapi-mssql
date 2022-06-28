@@ -1,27 +1,26 @@
-import { Router } from "express";
+import { Router } from 'express'
 import {
   getProducts,
-  createNewProduct,
+  // createNewProduct,
   getProductById,
-  deleteProductById,
-  getTotalProducts,
-  updateProductById,
-} from "../controllers/products.controller";
+  // deleteProductById,
+  // getTotalProducts,
+  // updateProductById,
+} from '../controllers/products.controller'
 
-const router = Router();
+const router = Router()
 
-console.log("🛸 Entering products.routes.js");
+console.log('🛸 Entering products.routes.js')
 
-router.get("/products", getProducts);
+router.get('/products', getProducts)
+router.get('/products/:id', getProductById)
 
-router.post("/products", createNewProduct);
+// router.post("/products", createNewProduct);
 
-router.get("/products/count", getTotalProducts);
+// router.get("/products/count", getTotalProducts);
 
-router.get("/products/:id", getProductById);
+// router.delete("/products/:id", deleteProductById);
 
-router.delete("/products/:id", deleteProductById);
+// router.put("/products/:id", updateProductById);
 
-router.put("/products/:id", updateProductById);
-
-export default router;
+export default router

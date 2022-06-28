@@ -1,4 +1,4 @@
-import sql from "mssql";
+import mssql from "mssql";
 import config from "../config";
 
 export const dbSettings = {
@@ -14,13 +14,13 @@ export const dbSettings = {
 
 export const getConnection = async () => {
   try {
-    console.log('🍒 Before Pool Connection');
-    const pool = await sql.connect(dbSettings);
+    console.log('📡 Before Pool Connection 🔌');
+    const pool = await mssql.connect(dbSettings);
     return pool;
   } catch (error) {
-    console.error('🩸 DB Conn ERROR: ' ,error);
+    console.error('🩸 DB Conn ERROR: 🩸' ,error);
     return null;
   }
 };
 
-export { sql };
+export { mssql };

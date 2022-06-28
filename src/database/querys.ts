@@ -1,10 +1,7 @@
 export const querys = {
-  getAllProducts: "SELECT TOP(500) * FROM [calendar].[dbo].[Products]",
-  getProductById: "SELECT * FROM Products Where Id = @Id",
-  addNewProduct:
-    "INSERT INTO [webstore].[dbo].[Products] (name, description, quantity) VALUES (@name,@description,@quantity);",
-  deleteProduct: "DELETE FROM [webstore].[dbo].[Products] WHERE Id= @Id",
-  getTotalProducts: "SELECT COUNT(*) FROM webstore.dbo.Products",
-  updateProductById:
-    "UPDATE [webstore].[dbo].[Products] SET Name = @name, Description = @description, Quantity = @quantity WHERE Id = @id",
-};
+  spGetBasketById: `EXEC [dbo].[spGetBasketById] @basketId`,
+  spAddItemToBasket: `EXEC [dbo].[spAddItemToBasket] @basketId, @buyerId, @productId, @quantity`,
+
+  getProducts: 'SELECT * FROM [dev-store].[dbo].[Products]',
+  getProductById: 'SELECT * FROM [dbo].[Products] Where productId = @productId',
+}
