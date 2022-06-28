@@ -1,4 +1,4 @@
-USE STORE
+USE [dev-store]
 
 -- TESTING
 ---------------------------------------------------------------------------
@@ -9,11 +9,11 @@ USE STORE
 -- DECLARE @buyerId VARCHAR(36)
 -- SET @buyerId = '4c8f5cd4-1df9-40ac-a99c-84b8b84c2370'
 
--- EXEC getBasketById @buyerId
+-- EXEC spGetBasketByBuyerId @buyerId
 
 
--- EXEC getBasketById '4c8f5cd4-1df9-40ac-a99c-84b8b84c2370'
--- EXEC getBasketById 'bdeda9b7-6c35-494a-815b-043c312d2878'
+EXEC dbo.spGetBasketByBuyerId 'dbe0a1e8-4fe0-4b4f-81bc-5ff501bade87'
+-- EXEC spGetBasketByBuyerId 'bdeda9b7-6c35-494a-815b-043c312d2878'
 
 
 -- INSERT INTO BasketItems
@@ -26,7 +26,7 @@ USE STORE
 -- VALUES
 --   (50, 3, 6);
 
--- sp_who getBasketById
+-- sp_who spGetBasketByBuyerId
 
 
 
@@ -44,11 +44,11 @@ USE STORE
 -- DECLARE @buyerId VARCHAR(36)
 -- SET @buyerId = '4c8f5cd4-1df9-40ac-a99c-84b8b84c2370'
 
--- EXEC getBasketById @buyerId
+-- EXEC spGetBasketByBuyerId @buyerId
 
 
--- EXEC getBasketById '4c8f5cd4-1df9-40ac-a99c-84b8b84c2370'
--- EXEC getBasketById 'bdeda9b7-6c35-494a-815b-043c312d2878'
+-- EXEC spGetBasketByBuyerId '4c8f5cd4-1df9-40ac-a99c-84b8b84c2370'
+-- EXEC spGetBasketByBuyerId 'bdeda9b7-6c35-494a-815b-043c312d2878'
 
 
 -- INSERT INTO BasketItems
@@ -61,7 +61,7 @@ USE STORE
 -- VALUES
 --   (50, 3, 6);
 
--- sp_who getBasketById
+-- sp_who spGetBasketByBuyerId
 
 -------------------------------------------------------------------------------------------
 

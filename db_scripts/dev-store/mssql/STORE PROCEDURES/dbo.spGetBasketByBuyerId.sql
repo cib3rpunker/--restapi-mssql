@@ -25,10 +25,10 @@ BEGIN
     FROM Baskets
     WHERE buyerId = @buyerId;
 
-    SELECT BI.productId, BI.quantity
+    SELECT BI.productId, P.name, P.price, P.pictureUrl, P.brand, P.[type] ,BI.quantity
     FROM Baskets B
-      INNER JOIN BasketItems BI
-      ON B.basketId = BI.basketId
+      INNER JOIN BasketItems BI ON B.basketId = BI.basketId
+      INNER JOIN Products P ON P.productId = BI.productId
     WHERE B.buyerId = @buyerId;
 
     COMMIT

@@ -7,9 +7,14 @@ interface Basket {
   buyerId: string
   items: {
     productId: number
+    name: string
+    price: number
+    pictureUrl: string
+    brand: string
+    type: string
     quantity: number
   }[],
-  error,
+  error: any,
 }
 
 export const getBuyerId = (req) => {
@@ -51,6 +56,11 @@ const retrieveBasket = async (buyerId) => {
     for (let i = 0; i < products.length; i++) {
       basket.items.push({
         productId: products[i].productId,
+        name: products[i].name,
+        price: products[i].price,
+        pictureUrl: products[i].pictureUrl,
+        brand: products[i].brand,
+        type: products[i].type,
         quantity: products[i].quantity,
       })
     }
@@ -188,7 +198,15 @@ export const addItemToBasket = async (req: Request, res: Response) => {
     const reply = result?.recordset[0]?.reply
 
     if(reply?.includes('INSERTED')) {
-      basket?.items.push({ productId: +productId, quantity: +quantity })
+      basket?.items.push({
+        productId: +productId,
+        name: product.name,
+        price: product.price,
+        pictureUrl: product.pictureUrl,
+        brand: product.brand,
+        type: product.type,
+        quantity: +quantity
+      })
     } else if(reply?.includes('UPDATED')) {
       basket.items.find(item => item.productId == +productId).quantity = +quantity
 
