@@ -238,3 +238,60 @@ export const addItemToBasket = async (req: Request, res: Response) => {
     return -1
   }
 }
+
+// DELETE api/basket?productId=1
+export const removeItemFromBasket = async (req: Request, res: Response) => {
+  console.log('🛸 Entering removeItemFromBasket')
+  try {
+    const { productId } = req.query
+
+    // validating
+    if (productId == null) {
+      return res.status(400).json({
+        msg: 'Bad Request. Please fill all fields',
+      })
+    }
+
+    let basket/* : Basket */ = await retrieveBasket(getBuyerId(req))
+    if (basket?.error) {
+      throw new Error(basket.error)
+    }
+
+    // if (!basket) {
+    //   basket = createBasket(res)
+    // }
+
+    // const item = basket.items.find(item => item.productId === +productId)
+    // if(item) {
+      const pool = await getConnection()
+      const result = await pool
+      ?.request()
+      .input('basketId', sql.Int, basket.basketId)
+      .input('productId', sql.Int, productId)
+      .query(querys.spRemoveItemFromBasket)
+
+      const reply: string = result?.recordset[0]?.reply
+
+      // if(!reply?.includes('NULL')) {
+      if(reply?.includes('DELETED')) {
+        basket.items = basket.items.filter(item => item.productId !== +productId)
+      } else {
+        res.status(404).send({ title: '🔴 Product not found', result })
+        return -1
+      }
+
+      res.status(201).json({ basket, result })
+      return 1
+    // }
+    // else {
+    //   res.status(404).send({ title: '🔴 Product not found' })
+    //   return -1
+    // }
+
+  } catch (error: any) {
+    console.log(`🛒 removeItemFromBasket(): 🟡 ${error/* .message */}`)
+    res.status(500)
+    res.send({ status: 500, title: `🟡 ${error/* .message */}` })
+    return -1
+  }
+}

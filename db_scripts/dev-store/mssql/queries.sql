@@ -131,7 +131,21 @@ DROP TABLE dbo.Baskets
 
 
 -- GET THE LAST INSERT ID
-SELECT SCOPE_IDENTITY()
+SELECT SCOPE_IDENTITY() as 
+
 
 SELECT USER_NAME();
 
+
+---------------------------------------------------
+SELECT * FROM dbo.BasketItems
+
+ EXECUTE dbo.spRemoveItemFromBasket @productId = 2, @basketId = 0
+
+ INSERT INTO dbo.Baskets (basketId, buyerId)
+ VALUES (1, 'bdeda9b7-6c35-494a-815b-043c312d2878')
+
+    SELECT 
+    SCOPE_IDENTITY() AS [SCOPE_IDENTITY()], 
+    IDENT_CURRENT('dbo.BasketItems') AS [IDENT_CURRENT('dbo.BasketItems')],
+    @@IDENTITY AS [@@IDENTITY]

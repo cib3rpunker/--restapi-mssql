@@ -1,5 +1,9 @@
 import { Router } from 'express'
-import { addItemToBasket, getBasket,  } from '../controllers/basket.controller'
+import {
+  addItemToBasket,
+  getBasket,
+  removeItemFromBasket,
+} from '../controllers/basket.controller'
 // import cookieParser from 'cookie-parser'
 
 // app.use(cookieParser());
@@ -12,5 +16,8 @@ router.get('/basket', getBasket)
 
 // POST api/basket?productId=1&quantity=2
 router.post('/basket', addItemToBasket)
+
+// DELETE api/basket?productId=1
+router.delete('/basket', removeItemFromBasket)
 
 export default router
