@@ -95,7 +95,6 @@ END
 
 
 
-
 ---------------------------------------------------------------------
 SELECT * FROM store.dbo.BasketItems
 SELECT * FROM store.dbo.Baskets
@@ -130,8 +129,5 @@ DROP TABLE dbo.BasketItems
 DROP TABLE dbo.Baskets
 
 
--- GET THE LAST INSERT ID
-SELECT SCOPE_IDENTITY()
-
-SELECT USER_NAME();
+SELECT * FROM [dbo].[Products]
 

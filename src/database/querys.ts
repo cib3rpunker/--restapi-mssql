@@ -1,5 +1,5 @@
 export const querys = {
-  spGetBasketById: `EXEC [dbo].[spGetBasketById] @basketId`,
+  spGetBasketByBuyerId: `EXEC [dbo].[spGetBasketByBuyerId] @basketId`,
   spAddItemToBasket: `EXEC [dbo].[spAddItemToBasket] @basketId, @buyerId, @productId, @quantity`,
 
   getProducts: 'SELECT * FROM [dev-store].[dbo].[Products]',

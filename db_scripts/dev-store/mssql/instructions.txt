@@ -6,5 +6,5 @@ Instructions
 4. CREATE TABLE [dbo].BasketItems
 5. INSERT INTO [dbo].Products
 6. CREATE PROCEDURE [dbo].spRethrowError
-7. CREATE PROCEDURE [dbo].spGetBasketById
+7. CREATE PROCEDURE [dbo].spGetBasketByBuyerId
 8. CREATE PROCEDURE [dbo].spAddItemToBasket

@@ -3,13 +3,13 @@ GO
 
 IF EXISTS (SELECT *
 FROM sys.objects
-WHERE object_id = OBJECT_ID(N'[dbo].[spGetBasketById]') AND type in (N'P', N'PC'))
+WHERE object_id = OBJECT_ID(N'[dbo].[spGetBasketByBuyerId]') AND type in (N'P', N'PC'))
 BEGIN
-  DROP PROCEDURE dbo.spGetBasketById
+  DROP PROCEDURE dbo.spGetBasketByBuyerId
 END
 GO
 
-CREATE PROCEDURE [dbo].[spGetBasketById]
+CREATE PROCEDURE [dbo].[spGetBasketByBuyerId]
   @buyerId NVARCHAR(36)
 AS
 BEGIN

@@ -35,7 +35,7 @@ const retrieveBasket = async (buyerId) => {
     const result = await pool
       ?.request()
       .input('buyerId', buyerId)
-      .execute('spGetBasketById')
+      .execute('spGetBasketByBuyerId')
 
     const basketId = result?.recordsets[0][0]?.basketId
     // const buyerId = result?.recordsets[0][1]?.buyerId
