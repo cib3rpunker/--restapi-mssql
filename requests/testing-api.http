@@ -1,0 +1,28 @@
+@api = http://localhost:5000/api/
+
+### getProducts
+GET {{api}}/products/
+
+### getProductById
+GET {{api}}/products/3
+
+### getBasketById
+GET {{api}}/basket
+# headers
+
+# {
+#     "cookie": "dbe0a1e8-4fe0-4b4f-81bc-5ff501bade87"
+# }
+
+### addItemToBasket productId = 2
+POST {{api}}/basket?productId=2&quantity=20
+### addItemToBasket productId = 3
+POST {{api}}/basket?productId=3&quantity=30
+### addItemToBasket productId = 4
+POST {{api}}/basket?productId=4&quantity=41
+
+### removeItemFromBasket productId = 1
+DELETE {{api}}/basket?productId=1
+
+### removeItemFromBasket productId = 2
+DELETE {{api}}/basket?productId=2

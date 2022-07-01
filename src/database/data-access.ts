@@ -96,7 +96,7 @@ const generateTable = (columns, entities) => {
     return table;
 };
 
-export = {
+export {
     pool,
     mssql,
     connect,
