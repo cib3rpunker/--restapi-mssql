@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { getConnection, querys, mssql as sql } from '../database'
 import { v4 as uuidv4 } from 'uuid'
+import dataAccess from '../database/data-access'
 
 interface Basket {
   basketId: number | null
@@ -13,13 +14,14 @@ interface Basket {
     brand: string
     type: string
     quantity: number
-  }[],
-  error: any,
+  }[]
+  error: any
 }
 
 export const getBuyerId = (req) => {
   // return User.Identity?.Name ?? Request.Cookies["buyerId"];
-  return req.cookies['buyerId']
+  // return req.cookies['buyerId']
+  return 'bdeda9b7-6c35-494a-815b-043c312d2878'
 }
 
 // call_spGetBasketByBuyerId
@@ -31,16 +33,9 @@ const retrieveBasket = async (buyerId) => {
   let basket: Basket = { basketId: null, buyerId: '', items: [], error: null }
 
   try {
-    const pool = await getConnection()
-
-    if (!pool) {
-      throw new Error()
-    }
-
-    const result = await pool
-      ?.request()
-      .input('buyerId', buyerId)
-      .execute('spGetBasketByBuyerId')
+    const result = await dataAccess.execute(`spGetBasketByBuyerId`, [
+      { name: 'buyerId', value: buyerId },
+    ])
 
     const basketId = result?.recordsets[0][0]?.basketId
     // const buyerId = result?.recordsets[0][1]?.buyerId
@@ -87,25 +82,23 @@ const createBasket = (res: Response): Basket => {
   // }
 
   // var basket = new basketModel({ buyerId: buyerId });
-  let basket: Basket = { basketId: -1, buyerId: buyerId, items: [], error: null }
+  let basket: Basket = {
+    basketId: -1,
+    buyerId: buyerId,
+    items: [],
+    error: null,
+  }
 
   return basket
 }
 
 export const retrieveProduct = async (productId) => {
   try {
-    const pool = await getConnection()
-    if (!pool) {
-      throw new Error()
-    }
-
-    const result = await pool
-      ?.request()
-      .input('productId', productId)
-      .query(querys.getProductById)
+    const result = await dataAccess.execute(`getProductById`, [
+      { name: 'productId', value: productId },
+    ])
 
     const product = result?.recordset[0]
-    // console.log(`product: ${product}`)
 
     if (!product) {
       return null
@@ -114,7 +107,7 @@ export const retrieveProduct = async (productId) => {
     }
   } catch (error: any) {
     // res.status(500).send(error.message)
-    console.log(`🥏 retrieveProduct(): 🟡 ${error}`)  // error.message
+    console.log(`🥏 retrieveProduct(): 🟡 ${error}`) // error.message
     // return { catch: { status: 500, title: '🟡 500 Internal Server Error' } }
     return error
   }
@@ -124,7 +117,7 @@ export const retrieveProduct = async (productId) => {
 export const getBasket = async (req: Request, res: Response) => {
   console.log('🛸 Entering getBasket')
   try {
-    let basket/* : Basket */ = await retrieveBasket(getBuyerId(req))
+    let basket /* : Basket */ = await retrieveBasket(getBuyerId(req))
 
     // if (basket?.name?.includes( 'Error', 'RequestError') || basket?.stack) {
     if (basket?.error) {
@@ -138,7 +131,6 @@ export const getBasket = async (req: Request, res: Response) => {
 
     res.status(200)
     res.send(basket)
-
   } catch (error: any) {
     console.log(`🛒 getBasket(): 🟡 ${error}`)
     res.status(500)
@@ -162,7 +154,7 @@ export const addItemToBasket = async (req: Request, res: Response) => {
     }
 
     // let basket: Basket = await call_spGetBasketByBuyerId(getBuyerId(req))
-    let basket/* : Basket */ = await retrieveBasket(getBuyerId(req))
+    let basket /* : Basket */ = await retrieveBasket(getBuyerId(req))
     // if (basket?.name == 'RequestError' || basket?.stack ) {
     if (basket?.error) {
       throw new Error(basket.error)
@@ -174,7 +166,6 @@ export const addItemToBasket = async (req: Request, res: Response) => {
 
     const product = await retrieveProduct(productId)
 
-    // if (product?.catch) {
     if (product?.name == 'RequestError') {
       throw new Error()
     }
@@ -186,18 +177,16 @@ export const addItemToBasket = async (req: Request, res: Response) => {
       return -1
     }
 
-    const pool = await getConnection()
-    const result = await pool
-    ?.request()
-    .input('basketId', sql.Int, basket.basketId)
-    .input('buyerId', sql.Text, basket.buyerId)
-    .input('productId', sql.Int, productId)
-    .input('quantity', sql.Int, quantity)
-    .query(querys.spAddItemToBasket)
+    const result = await dataAccess.execute(`spAddItemToBasket`, [
+      { name: 'basketId', value: basket.basketId },
+      { name: 'buyerId', value: basket.buyerId },
+      { name: 'productId', value: productId },
+      { name: 'quantity', value: quantity },
+    ])
 
     const reply = result?.recordset[0]?.reply
 
-    if(reply?.includes('INSERTED')) {
+    if (reply?.includes('INSERTED')) {
       basket?.items.push({
         productId: +productId,
         name: product.name,
@@ -205,10 +194,10 @@ export const addItemToBasket = async (req: Request, res: Response) => {
         pictureUrl: product.pictureUrl,
         brand: product.brand,
         type: product.type,
-        quantity: +quantity
+        quantity: +quantity,
       })
-    } else if(reply?.includes('UPDATED')) {
-      basket.items.find(item => item.productId == +productId).quantity = +quantity
+    } else if (reply?.includes('UPDATED')) {
+      basket.items.find((item) => item.productId == +productId).quantity = +quantity
 
       // USE the following alternative IF -> tsconfig.json "strictNullChecks": true
       // basket?.items.forEach((item, index) => {
@@ -230,11 +219,10 @@ export const addItemToBasket = async (req: Request, res: Response) => {
 
     res.status(201).json({ basket, result })
     return 1
-
   } catch (error: any) {
-    console.log(`🛒 addItemToBasket(): 🟡 ${error/* .message */}`)
+    console.log(`🛒 addItemToBasket(): 🟡 ${error /* .message */}`)
     res.status(500)
-    res.send({ status: 500, title: `🟡 ${error/* .message */}` })
+    res.send({ status: 500, title: `🟡 ${error /* .message */}` })
     return -1
   }
 }
@@ -252,7 +240,7 @@ export const removeItemFromBasket = async (req: Request, res: Response) => {
       })
     }
 
-    let basket/* : Basket */ = await retrieveBasket(getBuyerId(req))
+    let basket /* : Basket */ = await retrieveBasket(getBuyerId(req))
     if (basket?.error) {
       throw new Error(basket.error)
     }
@@ -263,35 +251,30 @@ export const removeItemFromBasket = async (req: Request, res: Response) => {
 
     // const item = basket.items.find(item => item.productId === +productId)
     // if(item) {
-      const pool = await getConnection()
-      const result = await pool
+    const pool = await getConnection()
+    const result = await pool
       ?.request()
       .input('basketId', sql.Int, basket.basketId)
       .input('productId', sql.Int, productId)
       .query(querys.spRemoveItemFromBasket)
 
-      const reply: string = result?.recordset[0]?.reply
+    const reply: string = result?.recordset[0]?.reply
 
-      // if(!reply?.includes('NULL')) {
-      if(reply?.includes('DELETED')) {
-        basket.items = basket.items.filter(item => item.productId !== +productId)
-      } else {
-        res.status(404).send({ title: '🔴 Product not found', result })
-        return -1
-      }
+    if (reply?.includes('DELETED')) {
+      basket.items = basket.items.filter(
+        (item) => item.productId !== +productId,
+      )
+    } else {
+      res.status(404).send({ title: '🔴 Product not found', result })
+      return -1
+    }
 
-      res.status(201).json({ basket, result })
-      return 1
-    // }
-    // else {
-    //   res.status(404).send({ title: '🔴 Product not found' })
-    //   return -1
-    // }
-
+    res.status(201).json({ basket, result })
+    return 1
   } catch (error: any) {
-    console.log(`🛒 removeItemFromBasket(): 🟡 ${error/* .message */}`)
+    console.log(`🛒 removeItemFromBasket(): 🟡 ${error /* .message */}`)
     res.status(500)
-    res.send({ status: 500, title: `🟡 ${error/* .message */}` })
+    res.send({ status: 500, title: `🟡 ${error /* .message */}` })
     return -1
   }
 }

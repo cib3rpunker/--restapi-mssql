@@ -1,4 +1,5 @@
 import mssql from "mssql";
+import config from "../config";
 
 let pool;
 
@@ -95,7 +96,7 @@ const generateTable = (columns, entities) => {
     return table;
 };
 
-module.exports = {
+export = {
     pool,
     mssql,
     connect,

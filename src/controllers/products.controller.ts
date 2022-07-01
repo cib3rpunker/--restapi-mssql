@@ -1,4 +1,5 @@
 import { getConnection, querys, mssql as sql } from '../database'
+import dataAccess from '../database/data-access'
 
 export const getProducts = async (_, res) => {
   try {
@@ -15,45 +16,13 @@ export const getProducts = async (_, res) => {
   }
 }
 
-// export const createNewProduct = async (req: any, res: any) => {
-//   const { name, description } = req.body
-//   let { quantity } = req.body
-
-//   // validating
-//   if (description == null || name == null) {
-//     return res.status(400).json({
-//       msg: 'Bad Request. Please fill all fields',
-//     })
-//   }
-
-//   if (quantity == null) quantity = 0
-
-//   try {
-//     const pool = await getConnection()
-
-//     await pool?.request()
-//       .input('name', sql.VarChar, name)
-//       .input('description', sql.Text, description)
-//       .input('quantity', sql.Int, quantity)
-//       .query(querys.addNewProduct)
-
-//     res.json({ name, description, quantity })
-//   } catch (error: any) {
-//     res.status(500)
-//     res.send(error.message)
-//   }
-// }
-
 export const getProductById = async (req, res) => {
   try {
-    const pool = await getConnection()
-
-    const result = await pool?.request()
-      .input('id', req.params.id)
-      .query(querys.getProductById)
+    const result = await dataAccess.query(querys.getProductById, [
+      { name: 'productId', value: req.params.id }
+    ]);
 
     const product = result?.recordset[0]
-    console.log(`product: ${product}`)
 
     if(!product) {
       res.status(404)

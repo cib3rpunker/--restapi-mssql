@@ -1,32 +1,26 @@
-@api = http://localhost:3000/api/products
+@api = http://localhost:5000/api/
+### getProducts
+GET {{api}}/products/
 
-{{api}}
+### getProductById
+GET {{api}}/products/3
 
-### add a product
-POST http://localhost:3000/api/products
-Content-Type: application/json
+GET http://localhost:5000/api/products
 
-{
-    "name": "product 2",
-   "description": "some product",
-   "quantity": 10
-}
+### getBasketById
+GET {{api}}/basket
+# headers
 
-### get product
-{{api}}/10
+# {
+#     "cookie": "dbe0a1e8-4fe0-4b4f-81bc-5ff501bade87"
+# }
 
-### delete product 
-DELETE {{api}}/10
+### addItemToBasket
+POST {{api}}/basket?productId=2&quantity=50
 
-### get count
-{{api}}/count
+# Content-Type: application/json
+# {
+#     "productId": 2,
+#     "quantity": 50
+# }
 
-### update
-PUT {{api}}/11
-Content-Type: application/json
-
-{
-    "name": "laptop",
-    "description": "some laptop",
-    "quantity": 20
-}
