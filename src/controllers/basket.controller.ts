@@ -19,8 +19,10 @@ interface Basket {
 
 export const getBuyerId = ( req ) => {
 	// return User.Identity?.Name ?? Request.Cookies["buyerId"];
-	// return req.cookies['buyerId']
-	return 'bdeda9b7-6c35-494a-815b-043c312d2878'
+	return req.cookies['buyerId']
+
+	// DEV NOTE: This is a workaround for dev-testing for the lack of a Cookie in the Request object.
+	// return 'bdeda9b7-6c35-494a-815b-043c312d2878'
 }
 
 // call_spGetBasketByBuyerId
@@ -145,9 +147,15 @@ export const addItemToBasket = async ( req: Request, res: Response ) => {
 		// debugger
 		const { productId, quantity } = req.query
 
-		if ( productId == null || quantity == null ) {
+		let errorMsg: string= ''
+		let invalidProductId = !productId || productId == 'undefined'
+		let invalidQuantity = !quantity || quantity == 'undefined'
+		errorMsg = invalidProductId ? '🔴 productId is required' : ''
+		errorMsg += invalidQuantity ? '🔴 quantity is required' : ''
+
+		if ( invalidProductId || invalidQuantity) {
 			return res.status( 400 ).json( {
-				msg: 'Bad Request. Please fill all fields',
+				msg: '🔥 Bad Request. ' + errorMsg,
 			} )
 		}
 
@@ -215,6 +223,9 @@ export const addItemToBasket = async ( req: Request, res: Response ) => {
 			// }
 		}
 
+		//💙https://stackoverflow.com/questions/14943607/how-to-set-the-location-response-http-header-in-express-framework
+		res.location( req.protocol + '://' + req.get( 'host' ) + '/api/basket' )
+		// res.setHeader('Location', req.protocol + '://' + req.get( 'host' ) + '/api/basket' )
 		res.status( 201 ).json( { basket, result } )
 		return 1
 	} catch ( error: any ) {
